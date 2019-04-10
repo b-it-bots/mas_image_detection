@@ -1,1 +1,5 @@
+frozen_graph_package: mas_image_detection
+frozen_graph_path: models/ssd_mobilenet_v1_fpn_shared_box_predictor_640x640_coco14.pb
+output_tensor_names: ['num_detections', 'detection_boxes', 'detection_scores', 'detection_classes']
+image_tensor_name: 'image_tensor'
 conf_threshold: 0.35

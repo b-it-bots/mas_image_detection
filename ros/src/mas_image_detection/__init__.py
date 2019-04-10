@@ -1,1 +1,1 @@
-from .ssd_tensorflow import SSDTensorflowImageDetector
+from .ssd_tensorflow import SSDTfModelsImageDetector
