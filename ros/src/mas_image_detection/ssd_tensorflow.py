@@ -54,6 +54,9 @@ class SSDTfModelsImageDetector(ImageDetectorBase):
             raise ValueError("'image_tensor_name' is not defined in kwargs file")
 
     def _detect(self, np_images, orig_img_sizes):
+        # stack all images into a single tensor of shape (batch_size, height, width, 3)
+        image_array = np.stack(np_images, axis=0)
+        predictions = []
         with self._detection_graph.as_default():
             with tf.Session() as sess:
                 # get handles for output tensors
@@ -66,7 +69,28 @@ class SSDTfModelsImageDetector(ImageDetectorBase):
 
                 # get image tensor
                 image_tensor = tf.get_default_graph().get_tensor_by_name(self._image_tensor_name)
-                print(tf.shape(image_tensor))
 
-        predictions = []
+                # run inference
+                output_dict = sess.run(output_tensor_dict, feed_dict={image_tensor: image_array})
+
+                # fill detection results
+                for img_index, img_size in enumerate(orig_img_sizes):
+                    print('image size: ', img_size)
+                    boxes = []
+                    num_detection = int(output_dict['num_detections'][img_index])
+                    for detection_index in range(num_detection):
+                        detected_class = self._classes[output_dict['detection_classes'][img_index][detection_index]]
+                        confidence = output_dict['detection_scores'][img_index][detection_index]
+                        # normalized y_min, x_min, y_max, x_max
+                        box = output_dict['detection_boxes'][img_index][detection_index]
+                        # convert to true coordinates using img_size
+                        box = np.multiply(box, [img_size[1], img_size[0], img_size[1], img_size[0]])
+                        box_dict = {
+                                ImageDetectionKey.CLASS: detected_class, ImageDetectionKey.CONF: confidence,
+                                ImageDetectionKey.X_MIN: box[1], ImageDetectionKey.Y_MIN: box[0],
+                                ImageDetectionKey.X_MAX: box[3], ImageDetectionKey.Y_MAX: box[2]
+                            }
+                        boxes.append(box_dict)
+                    predictions.append(boxes)
+
         return predictions
