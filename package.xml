@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>mas_image_detection</name>
+  <version>0.0.1</version>
+  <description>Integrate image detection algorithms for use with b-it-bot@Home perception functionalities</description>
+
+  <maintainer email="robotics@mail.inf.h-brs.de">MAS Robotics</maintainer>
+
+  <license>GPLv3</license>
+
+  <author email="minhnh.91@gmail.com">Minh Nguyen</author>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <depend>rospy</depend>
+
+</package>
