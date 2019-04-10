@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<launch>
+    <arg name="image_directory" default="" />
+    <arg name="cloud_topic" default="" />
+    <arg name="image_topic" default="" />
+    <arg name="class_annotations" default="$(find mas_image_detection)/models/coco_classes.yml" />
+    <arg name="kwargs_file" default="$(find mas_image_detection)/models/ssd_tensorflow_image_detector_kwargs.yml" />
+    <arg name="detection_module" default="mas_image_detection.ssd_tensorflow" />
+    <arg name="detection_class" default="SSDTensorflowImageDetector" />
+
+    <include file="$(find mas_perception_libs)/ros/launch/image_detection_test.launch" >
+        <arg name="image_directory" value="$(arg image_directory)" />
+        <arg name="cloud_topic" value="$(arg cloud_topic)" />
+        <arg name="image_topic" value="$(arg image_topic)" />
+        <arg name="class_annotations" value="$(arg class_annotations)" />
+        <arg name="kwargs_file" value="$(arg kwargs_file)" />
+        <arg name="detection_module" value="$(arg detection_module)" />
+        <arg name="detection_class" value="$(arg detection_class)" />
+    </include>
+</launch>

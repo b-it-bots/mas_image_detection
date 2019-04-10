@@ -12,5 +12,7 @@
 
   <buildtool_depend>catkin</buildtool_depend>
   <depend>rospy</depend>
+  
+  <exec_depend>mas_perception_libs</exec_depend>
 
 </package>
