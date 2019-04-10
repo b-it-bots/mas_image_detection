@@ -60,11 +60,13 @@ class SSDTfModelsImageDetector(ImageDetectorBase):
                 ops = tf.get_default_graph().get_operations()
                 all_tensor_names = {output.name for op in ops for output in op.outputs}
                 output_tensor_dict = {}
-                for key in self._output_tensor_names:
-                    tensor_name = key + ':0'
+                for key, tensor_name in self._output_tensor_names.iteritems():
                     if tensor_name in all_tensor_names:
                         output_tensor_dict[key] = tf.get_default_graph().get_tensor_by_name(tensor_name)
-                print(output_tensor_dict.keys())
+
+                # get image tensor
+                image_tensor = tf.get_default_graph().get_tensor_by_name(self._image_tensor_name)
+                print(tf.shape(image_tensor))
 
         predictions = []
         return predictions
