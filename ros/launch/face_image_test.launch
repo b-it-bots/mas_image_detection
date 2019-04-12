@@ -3,8 +3,8 @@
     <arg name="image_directory" default="" />
     <arg name="cloud_topic" default="" />
     <arg name="image_topic" default="" />
-    <arg name="class_annotations" default="$(find mas_image_detection)/configs/tf_models_coco_classes.yml" />
-    <arg name="kwargs_file" default="$(find mas_image_detection)/configs/ssd_tensorflow_coco_kwargs.yml" />
+    <arg name="class_annotations" default="$(find mas_image_detection)/configs/tf_models_face_classes.yml" />
+    <arg name="kwargs_file" default="$(find mas_image_detection)/configs/ssd_tensorflow_face_kwargs.yml" />
     <arg name="detection_module" default="mas_image_detection.ssd_tensorflow" />
     <arg name="detection_class" default="SSDTfModelsImageDetector" />
 

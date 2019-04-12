@@ -1,0 +1,9 @@
+frozen_graph_package: mas_image_detection
+frozen_graph_path: models/ssd_mobilenet_widerface.pb
+output_tensor_names:
+  num_detections: 'num_detections:0'
+  detection_boxes: 'detection_boxes:0'
+  detection_scores: 'detection_scores:0'
+  detection_classes: 'detection_classes:0'
+image_tensor_name: 'image_tensor:0'
+conf_threshold: 0.35

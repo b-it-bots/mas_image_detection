@@ -17,12 +17,16 @@ class SSDTfModelsImageDetector(ImageDetectorBase):
     _output_tensor_names = None
     _image_tensor_name = None
     _rp = None
+    _conf_threshold = None
 
     def __init__(self, **kwargs):
         self._rp = RosPack()
         super(SSDTfModelsImageDetector, self).__init__(**kwargs)
 
     def load_model(self, **kwargs):
+        # load confidence threshold
+        self._conf_threshold = kwargs.get('conf_threshold', 0.3)
+
         # load frozen inference graph from
         frozen_graph_package = kwargs.get('frozen_graph_package', None)
         if not frozen_graph_package:
@@ -75,12 +79,17 @@ class SSDTfModelsImageDetector(ImageDetectorBase):
 
                 # fill detection results
                 for img_index, img_size in enumerate(orig_img_sizes):
-                    print('image size: ', img_size)
                     boxes = []
                     num_detection = int(output_dict['num_detections'][img_index])
                     for detection_index in range(num_detection):
-                        detected_class = self._classes[output_dict['detection_classes'][img_index][detection_index]]
+                        detection_key = output_dict['detection_classes'][img_index][detection_index]
+                        if detection_key not in self._classes:
+                            print("WARNING: key '{}' is not in the class dictionary".format(detection_key))
+                            continue
+                        detected_class = self._classes[detection_key]
                         confidence = output_dict['detection_scores'][img_index][detection_index]
+                        if confidence < self._conf_threshold:
+                            continue
                         # normalized y_min, x_min, y_max, x_max
                         box = output_dict['detection_boxes'][img_index][detection_index]
                         # convert to true coordinates using img_size
